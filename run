@@ -1,0 +1,2 @@
+clear
+flask --app flaskboard run --debug
