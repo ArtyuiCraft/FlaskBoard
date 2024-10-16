@@ -2,6 +2,7 @@ import os
 from flask import Flask
 
 def start(*args,**kwargs):
+    print(os.listdir())
     create_app()
 
 def create_app(test_config=None):
