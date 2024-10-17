@@ -1,2 +1,2 @@
 clear
-flask --app flaskboard run --debug
+flask --app flaskboard run --debug -h 0.0.0.0
