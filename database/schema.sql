@@ -10,6 +10,9 @@ CREATE TABLE user (
   password TEXT NOT NULL
 );
 
+INSERT INTO user (username, email, password) 
+VALUES ('Dev', 'Dev@flaskboard.com', 'scrypt:32768:8:1$QgTQwtm4xufZJPiw$dd5b2ff21ce3dfcd90d3ec13e0361cd0fa3b8c9f9635d2ed2e1c3902415b7e3c821d4a9cec2e6a3738f3a4b5b79c5a52b6373bd0d88b2042eb1b8f4048874fba');
+
 CREATE TABLE emails (
   email TEXT UNIQUE NOT NULL
 );
@@ -27,4 +30,3 @@ CREATE TABLE post (
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
-
