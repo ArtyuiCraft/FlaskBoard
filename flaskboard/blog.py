@@ -12,17 +12,30 @@ from .db import get_db
 
 bp = Blueprint("blog", __name__)
 
-
-@bp.route("/")
+@bp.route('/')
 def index():
-    """Show all the posts, most recent first."""
     db = get_db()
     posts = db.execute(
-        "SELECT p.id, title, body, created, author_id, username"
-        " FROM post p JOIN user u ON p.author_id = u.id"
-        " ORDER BY created DESC"
+        'SELECT p.id, p.title, p.body, p.created, p.topic, u.username, p.author_id'
+        ' FROM post p JOIN user u ON p.author_id = u.id'
+        ' ORDER BY p.created DESC'
     ).fetchall()
-    return render_template("blog/index.html", posts=posts)
+    topics = db.execute(
+        'SELECT name FROM topics'
+    ).fetchall()
+    return render_template('blog/index.html', posts=posts, topics=topics)
+
+@bp.route('/topic/<topic_name>')
+def posts_by_topic(topic_name):
+    db = get_db()
+    posts = db.execute(
+        'SELECT p.id, p.title, p.body, p.created, p.topic, u.username, p.author_id'
+        ' FROM post p JOIN user u ON p.author_id = u.id'
+        ' WHERE p.topic = ?'
+        ' ORDER BY p.created DESC',
+        (topic_name,)
+    ).fetchall()
+    return render_template('blog/posts_by_topic.html', posts=posts, topic_name=topic_name)
 
 
 def get_post(id, check_author=True):
@@ -67,15 +80,40 @@ def get_post(id, check_author=True):
 
     return post
 
+@bp.route('/user/<int:user_id>')
+def user_profile(user_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    
+    # Fetch user information
+    cursor.execute('SELECT * FROM user WHERE id = ?', (user_id,))
+    user = cursor.fetchone()
+    
+    # Fetch user's posts
+    cursor.execute('SELECT * FROM post WHERE author_id = ?', (user_id,))
+    posts = cursor.fetchall()
+    
+    conn.close()
+    
+    return render_template('blog/user_profile.html', user=user, posts=posts)
 
 @bp.route("/create", methods=("GET", "POST"))
 @login_required
 def create():
     """Create a new post for the current user."""
+    db = get_db()
+    topics = db.execute(
+        'SELECT name FROM topics'
+    ).fetchall()
+
     if request.method == "POST":
         title = request.form["title"]
         body = request.form["body"]
+        topic = request.form["topic"]
         error = None
+        
+        if topic == "changelog" and g.user["username"] != "Dev":
+            error = "Access denied to: changelog"
 
         if not title:
             error = "Title is required."
@@ -85,14 +123,34 @@ def create():
         else:
             db = get_db()
             db.execute(
-                "INSERT INTO post (title, body, author_id) VALUES (?, ?, ?)",
-                (title, body, g.user["id"]),
+                "INSERT INTO post (title, body, author_id, topic) VALUES (?, ?, ?, ?)",
+                (title, body, g.user["id"], topic),
             )
             db.commit()
             return redirect(url_for("blog.index"))
 
-    return render_template("blog/create.html")
+    return render_template("blog/create.html", topics=[topic[0] for topic in topics])
 
+
+@bp.route('/add_topic', methods=['GET', 'POST'])
+def add_topic():
+    if request.method == 'POST':
+        name = request.form['name']
+        error = None
+
+        if not name:
+            error = "Topic name is required"
+
+        if error != None:
+            flash(error)
+        else:
+            conn = get_db()
+            conn.execute('INSERT INTO topics (name) VALUES (?)', (name,))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+
+    return render_template('blog/newtopic.html')
 
 @bp.route("/<int:id>/update", methods=("GET", "POST"))
 @login_required

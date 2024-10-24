@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>User Profile: {{ user[1] }}</h1> <!-- Assuming username is the second column -->
+{% endblock %}
+
+{% block content %}
+  <h2>User Information</h2>
+  <p><strong>Email:</strong> {{ user[2] }}</p> <!-- Assuming email is the third column -->
+  
+  <h2>Posts</h2>
+  {% if posts %}
+    <ul>
+      {% for post in posts %}
+        <li>
+          <h3>{{ post[3] }}</h3> <!-- Assuming title is the fourth column -->
+          <p>{{ post[4] }}</p> <!-- Assuming body is the fifth column -->
+          <p><em>Created on: {{ post[2] }}</em></p> <!-- Assuming created timestamp is the third column -->
+          <p><strong>Topic:</strong> {{ post[5] }}</p> <!-- Assuming topic is the sixth column -->
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No posts found for this user.</p>
+  {% endif %}
+{% endblock %}
+
