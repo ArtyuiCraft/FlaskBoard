@@ -69,8 +69,6 @@ def get_post(id, check_author=True):
     else:
         admin = True
 
-    print(admin)
-
     if post is None:
         abort(404, f"Post id {id} doesn't exist.")
 
@@ -79,6 +77,34 @@ def get_post(id, check_author=True):
             abort(403)
 
     return post
+
+def get_comments(post_id):
+    db = get_db()
+    return db.execute("SELECT * FROM comments WHERE post_id = ?", (post_id,))
+
+@bp.route("/post/<int:post_id>", methods=('GET', 'POST'))
+def post(post_id):
+    db = get_db()
+    post = get_post(post_id,False)
+    comments = get_comments(post_id)
+    if request.method == "POST":
+        body = request.form["body"]
+        error = None
+
+        if body.strip(" ") == "":
+            error = "empty comment"
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                "INSERT INTO comments (author_name,author_id, body, post_id) VALUES (?, ?, ?, ?)",
+                (g.user['username'], g.user["id"], body ,post_id),
+            )
+            db.commit()
+    return render_template("blog/post.html", user = g.user, post = post, comments = comments)
+
 @bp.route("/user/<int:user_id>/delete", methods=("POST",))
 @login_required
 def deleteuser(user_id):
@@ -186,7 +212,7 @@ def update(id):
     return render_template("blog/update.html", post=post)
 
 
-@bp.route("/<int:id>/delete", methods=("POST",))
+@bp.route("/post/<int:id>/delete", methods=("POST",))
 @login_required
 def delete(id):
     """Delete a post.
@@ -197,5 +223,6 @@ def delete(id):
     get_post(id)
     db = get_db()
     db.execute("DELETE FROM post WHERE id = ?", (id,))
+    db.execute("DELETE FROM comments WHERE post_id = ?", (id,))
     db.commit()
     return redirect(url_for("blog.index"))

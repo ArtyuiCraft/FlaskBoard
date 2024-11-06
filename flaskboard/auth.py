@@ -32,7 +32,7 @@ def settings():
             error = 'Username is required.'
         if error is None:
             result = db.execute("SELECT 1 FROM user WHERE username = ?", (username,)).fetchone()
-    
+
             if result is None:
                 db.execute("UPDATE user SET username = ? WHERE id = ?", (username, g.user['id']))
                 db.commit()
@@ -59,7 +59,7 @@ def register():
             error = 'Password is required.'
         elif not email:
             error = 'Email is required.'
-        elif db.execute("SELECT 1 FROM emails WHERE email = ?", (email,)).fetchone():
+        elif db.execute("SELECT 1 FROM emails WHERE email = ?", email).fetchone():
             error = 'Email already in use or banned.'
 
         if error is None:

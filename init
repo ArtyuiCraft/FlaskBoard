@@ -1,1 +1,2 @@
+rm -rf instance
 flask --app flaskboard init-db
