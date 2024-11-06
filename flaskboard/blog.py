@@ -60,7 +60,7 @@ def get_post(id, check_author=True):
         )
         .fetchone()
     )
-    
+
     if g.user["username"] != "Dev":
         admin = (
             get_db()
@@ -70,7 +70,7 @@ def get_post(id, check_author=True):
         admin = True
 
     print(admin)
-    
+
     if post is None:
         abort(404, f"Post id {id} doesn't exist.")
 
@@ -79,22 +79,29 @@ def get_post(id, check_author=True):
             abort(403)
 
     return post
+@bp.route("/user/<int:user_id>/delete", methods=("POST",))
+@login_required
+def deleteuser(user_id):
+    db = get_db()
+    db.execute("DELETE FROM user WHERE id = ?", (user_id,))
+    db.commit()
+    return redirect(url_for("blog.index"))
 
 @bp.route('/user/<int:user_id>')
 def user_profile(user_id):
     conn = get_db()
     cursor = conn.cursor()
-    
+
     # Fetch user information
     cursor.execute('SELECT * FROM user WHERE id = ?', (user_id,))
     user = cursor.fetchone()
-    
+
     # Fetch user's posts
     cursor.execute('SELECT * FROM post WHERE author_id = ?', (user_id,))
     posts = cursor.fetchall()
-    
+
     conn.close()
-    
+
     return render_template('blog/user_profile.html', user=user, posts=posts)
 
 @bp.route("/create", methods=("GET", "POST"))
@@ -111,7 +118,7 @@ def create():
         body = request.form["body"]
         topic = request.form["topic"]
         error = None
-        
+
         if topic == "changelog" and g.user["username"] != "Dev":
             error = "Access denied to: changelog"
 

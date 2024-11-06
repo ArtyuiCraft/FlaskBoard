@@ -74,7 +74,7 @@ nav ul li {
 }
 
 nav ul li a, nav ul li span, header .action {
-  color: #1d3a57;
+  color: #6688a9;
   padding: 0.5rem 1rem;
   transition: background-color 0.2s ease;
   border-radius: 4px;
@@ -151,7 +151,6 @@ nav ul li a:hover {
   padding: 1.5em;
   border-radius: 8px;
 }
-
 .content label {
   font-weight: bold;
   margin-bottom: 0.5em;
@@ -171,10 +170,20 @@ nav ul li a:hover {
   resize: vertical;
 }
 
-input.danger {
-  color: #cc2f2e;
-  border-color: #cc2f2e;
+input[value="Delete"].danger {
+  align-self: flex-start;
+  min-width: 10em;
+  background-color: #ff2f2e;
+  border: none;
+  border-radius: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
+
+input[value="Delete"].danger:hover {
+  background-color: #cc2f2e;
+}
+
 
 input[type=submit] {
   align-self: flex-start;
