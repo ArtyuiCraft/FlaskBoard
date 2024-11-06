@@ -32,6 +32,9 @@ CREATE TABLE IF NOT EXISTS topics (
 );
 
 INSERT INTO topics (name)
+VALUES ('General');
+
+INSERT INTO topics (name)
 VALUES ('Testing');
 
 CREATE TABLE IF NOT EXISTS post (
