@@ -60,7 +60,6 @@ def get_post(id, check_author=True):
         )
         .fetchone()
     )
-
     if g.user["username"] != "Dev":
         admin = (
             get_db()
@@ -83,6 +82,7 @@ def get_comments(post_id):
     return db.execute("SELECT * FROM comments WHERE post_id = ?", (post_id,))
 
 @bp.route("/post/<int:post_id>", methods=('GET', 'POST'))
+@login_required
 def post(post_id):
     db = get_db()
     post = get_post(post_id,False)

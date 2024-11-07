@@ -1,0 +1,2 @@
+clear
+coverage run -m pytest
