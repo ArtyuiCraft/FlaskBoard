@@ -1,2 +1,2 @@
 clear
-flask --app flaskboard run -h 0.0.0.0
+gunicorn -w 16 -b 0.0.0.0 'flaskboard:create_app()'

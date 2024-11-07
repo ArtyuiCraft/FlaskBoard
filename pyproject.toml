@@ -1,0 +1,13 @@
+[project]
+name = "flaskboard"
+version = "1.0.0"
+description = "The basic blog app built in the Flask tutorial."
+dependencies = [
+   	"click==8.1.7",
+	"Flask==3.0.3",
+	"Werkzeug==3.1.2"
+]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"

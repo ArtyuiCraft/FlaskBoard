@@ -1,3 +1,10 @@
+blinker==1.8.2
 click==8.1.7
 Flask==3.0.3
+-e git+https://github.com/ArtyuiCraft/FlaskBoard.git@3e5c783949523c71a7d6e9efa8a0f3092d93da3e#egg=flaskboard
+gunicorn==23.0.0
+itsdangerous==2.2.0
+Jinja2==3.1.4
+MarkupSafe==3.0.2
+packaging==24.1
 Werkzeug==3.1.2
