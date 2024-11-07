@@ -1,5 +1,3 @@
-asttokens==2.4.1
-attrs==23.2.1.dev0
 backcall==0.2.0
 beautifulsoup4==4.12.3
 bleach==6.2.0
