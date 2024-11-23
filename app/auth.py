@@ -5,7 +5,7 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskboard.db import get_db
+from app.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -59,7 +59,7 @@ def register():
             error = 'Password is required.'
         elif not email:
             error = 'Email is required.'
-        elif db.execute("SELECT 1 FROM emails WHERE email = ?", email).fetchone():
+        elif db.execute("SELECT 1 FROM emails WHERE email = ?", (email,)).fetchone():
             error = 'Email already in use or banned.'
 
         if error is None:

@@ -5,6 +5,7 @@ from flask import redirect
 from flask import render_template
 from flask import request
 from flask import url_for
+from flask import current_app
 from werkzeug.exceptions import abort
 
 from .auth import login_required

@@ -1,2 +1,3 @@
 rm -rf instance
 flask --app flaskboard init-db
+chmod 777 instance
