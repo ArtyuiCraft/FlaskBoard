@@ -1,5 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/flaskboard/__init__.py" }
+    { "source": "/(.*)", "destination": "/flaskboard/blog.py" }
   ]
 }

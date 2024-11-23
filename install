@@ -4,3 +4,4 @@ echo "done"
 . .venv/bin/activate
 python -m pip install -e .
 python -m pip install -r requirements.txt
+./init
