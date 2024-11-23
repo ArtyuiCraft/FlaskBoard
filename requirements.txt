@@ -3,6 +3,7 @@ attrs==23.2.1.dev0
 backcall==0.2.0
 beautifulsoup4==4.12.3
 bleach==6.2.0
+blessed==1.20.0
 blinker==1.8.2
 certifi==2024.8.30
 cffi==1.17.1
@@ -13,6 +14,7 @@ cryptography==42.0.8
 decorator==5.1.1
 defusedxml==0.7.1
 docopt==0.6.2
+evdev==1.7.1
 executing==2.1.0
 fastjsonschema==2.20.0
 filelock==3.13.3
@@ -29,6 +31,7 @@ jsonschema-specifications==2024.10.1
 jupyter_client==8.6.3
 jupyter_core==5.7.2
 jupyterlab_pygments==0.3.0
+keyboard==0.13.5
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 matplotlib-inline==0.1.7
@@ -51,8 +54,10 @@ ptyprocess==0.7.0
 pure_eval==0.2.3
 pycparser==2.22
 Pygments==2.18.0
+pynput==1.7.7
 pytest==8.3.3
 python-dateutil==2.9.0.post0
+python-xlib==0.33
 pyzmq==26.2.0
 referencing==0.35.1
 requests==2.32.3
@@ -60,7 +65,10 @@ rich==13.9.3
 rpds-py==0.21.0
 six==1.16.0
 soupsieve==2.6
+sshkeyboard==2.3.1
 stack-data==0.6.3
+TBB==0.2
+termcolor==2.5.0
 terminal-widgets==1.1
 tinycss2==1.4.0
 tornado==6.4.1
